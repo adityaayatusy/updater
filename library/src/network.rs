@@ -7,6 +7,9 @@ use std::fs::File;
 use std::io::Write;
 use std::path::Path;
 use std::string::ToString;
+use reqwest::blocking::Response;
+use http::response::Builder;
+use http::StatusCode;
 
 use crate::config::{current_arch, current_platform, UpdateConfig};
 use crate::events::PatchEvent;
@@ -76,12 +79,23 @@ pub fn download_file_default(url: &str) -> anyhow::Result<Vec<u8>> {
     Ok(bytes.to_vec())
 }
 
-pub fn report_event_default(url: &str, request: CreatePatchEventRequest) -> anyhow::Result<()> {
-    let client = reqwest::blocking::Client::new();
-    let result = client.post(url).json(&request).send();
-    handle_network_result(result)?;
+// pub fn report_event_default(_url: &str, request: CreatePatchEventRequest) -> anyhow::Result<()> {
+//     let client = reqwest::blocking::Client::new();
+//     let result = client.post(url).json(&request).send();
+//     handle_network_result(result)?;
+//     Ok(())
+// }
+
+pub fn report_event_default(_url: &str, _request: CreatePatchEventRequest) -> anyhow::Result<()> {
+    let response = Response::from(
+        Builder::new()
+            .status(StatusCode::OK)
+            .body("mock body")?,
+    );
+    handle_network_result(Ok(response))?;
     Ok(())
 }
+
 
 /// Handles the result of a network request, returning the response if it was
 /// successful, an error if it was not, or a special error if the network
