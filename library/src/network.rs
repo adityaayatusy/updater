@@ -79,22 +79,22 @@ pub fn download_file_default(url: &str) -> anyhow::Result<Vec<u8>> {
     Ok(bytes.to_vec())
 }
 
-// pub fn report_event_default(_url: &str, request: CreatePatchEventRequest) -> anyhow::Result<()> {
-//     let client = reqwest::blocking::Client::new();
-//     let result = client.post(url).json(&request).send();
-//     handle_network_result(result)?;
-//     Ok(())
-// }
-
-pub fn report_event_default(_url: &str, _request: CreatePatchEventRequest) -> anyhow::Result<()> {
-    let response = Response::from(
-        Builder::new()
-            .status(StatusCode::OK)
-            .body("mock body")?,
-    );
-    handle_network_result(Ok(response))?;
+pub fn report_event_default(url: &str, request: CreatePatchEventRequest) -> anyhow::Result<()> {
+    let client = reqwest::blocking::Client::new();
+    let result = client.post(url).json(&request).send();
+    handle_network_result(result)?;
     Ok(())
 }
+
+// pub fn report_event_default(_url: &str, _request: CreatePatchEventRequest) -> anyhow::Result<()> {
+//     let response = Response::from(
+//         Builder::new()
+//             .status(StatusCode::OK)
+//             .body("mock body")?,
+//     );
+//     handle_network_result(Ok(response))?;
+//     Ok(())
+// }
 
 
 /// Handles the result of a network request, returning the response if it was
